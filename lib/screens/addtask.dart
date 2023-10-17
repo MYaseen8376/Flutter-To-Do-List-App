@@ -55,112 +55,115 @@ class _AddTaskPageState extends State<AddTaskPage> {
         backgroundColor: Colors.green[400],
         elevation: 0,
       ),
-      body: Column(children: <Widget>[
-        Container(
-          width: double.infinity,
-          height: height * 0.3,
-          decoration: BoxDecoration(
-              color: Colors.green[400],
-              borderRadius:
-                  const BorderRadius.only(bottomLeft: Radius.circular(50))),
-          child: Image.asset(
-            "assets/images/bgicon.png",
-            scale: 2.0,
+      body: SingleChildScrollView(
+        child: Column(children: <Widget>[
+          Container(
+            width: double.infinity,
+            height: height * 0.3,
+            decoration: BoxDecoration(
+                color: Colors.green[400],
+                borderRadius:
+                    const BorderRadius.only(bottomLeft: Radius.circular(50))),
+            child: Image.asset(
+              "assets/images/bgicon.png",
+              scale: 2.0,
+            ),
           ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Column(
-            children: [
-              TextField(
-                controller: taskNameController,
-                decoration: InputDecoration(
-                  hintText: 'Task Name',
-                  border: OutlineInputBorder(
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: Column(
+              children: [
+                TextField(
+                  controller: taskNameController,
+                  decoration: InputDecoration(
+                    hintText: 'Task Name',
+                    border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(color: Colors.green)),
+                  ),
+                ),
+                const SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  controller: taskDescriptionController,
+                  decoration: InputDecoration(
+                    hintText: 'Task Description',
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12), // Rounded border
+                      borderSide:
+                          BorderSide(color: Colors.grey), // Border color
+                    ),
+                  ),
+                ),
+                ElevatedButton(
+                  onPressed: () => _selectDate(context),
+                  child: Text("Select Date & Time"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green, // Button background color
+                    shape: RoundedRectangleBorder(
+                      borderRadius:
+                          BorderRadius.circular(12), // Rounded button shape
+                    ),
+                  ),
+                ),
+                TextField(
+                  controller: taskDateTimeController,
+                  decoration: InputDecoration(
+                    labelText: 'Task Date and Time',
+                    border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.green)),
-                ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              TextField(
-                controller: taskDescriptionController,
-                decoration: InputDecoration(
-                  hintText: 'Task Description',
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(12), // Rounded border
-                    borderSide: BorderSide(color: Colors.grey), // Border color
+                      borderSide: BorderSide(color: Colors.grey),
+                    ),
                   ),
                 ),
-              ),
-              ElevatedButton(
-                onPressed: () => _selectDate(context),
-                child: Text("Select Date & Time"),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green, // Button background color
-                  shape: RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.circular(12), // Rounded button shape
-                  ),
+                const SizedBox(
+                  height: 10,
                 ),
-              ),
-              TextField(
-                controller: taskDateTimeController,
-                decoration: InputDecoration(
-                  labelText: 'Task Date and Time',
-                  border: OutlineInputBorder(
+                Container(
+                  decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12),
-                    borderSide: BorderSide(color: Colors.grey),
+                    border: Border.all(color: Colors.grey),
+                  ),
+                  child: DropdownButton<String>(
+                    value: selectedCategory,
+                    onChanged: (String? value) {
+                      setState(() {
+                        selectedCategory = value ?? 'Work';
+                      });
+                    },
+                    items: categories.map((String category) {
+                      return DropdownMenuItem<String>(
+                        value: category,
+                        child: Padding(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 15, vertical: 10),
+                          child: Text(category),
+                        ),
+                      );
+                    }).toList(),
+                    underline: Container(),
+                    icon: const Icon(Icons.arrow_drop_down),
+                    style: const TextStyle(color: Colors.black),
+                    isExpanded: true,
+                    itemHeight: 50,
                   ),
                 ),
-              ),
-              const SizedBox(
-                height: 10,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.grey),
-                ),
-                child: DropdownButton<String>(
-                  value: selectedCategory,
-                  onChanged: (String? value) {
-                    setState(() {
-                      selectedCategory = value ?? 'Work';
-                    });
-                  },
-                  items: categories.map((String category) {
-                    return DropdownMenuItem<String>(
-                      value: category,
-                      child: Padding(
-                        padding:
-                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-                        child: Text(category),
-                      ),
-                    );
-                  }).toList(),
-                  underline: Container(),
-                  icon: const Icon(Icons.arrow_drop_down),
-                  style: const TextStyle(color: Colors.black),
-                  isExpanded: true,
-                  itemHeight: 50,
-                ),
-              ),
-              ElevatedButton(
-                onPressed: _saveTask,
-                child: const Text("Save Task"),
-                style: ElevatedButton.styleFrom(
-                  primary: Colors.green, // Button background color
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                ElevatedButton(
+                  onPressed: _saveTask,
+                  child: const Text("Save Task"),
+                  style: ElevatedButton.styleFrom(
+                    primary: Colors.green, // Button background color
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ]),
+        ]),
+      ),
     );
   }
 

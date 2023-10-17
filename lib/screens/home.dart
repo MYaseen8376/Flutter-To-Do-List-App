@@ -75,6 +75,11 @@ class _HomeState extends State<Home> {
     }
   }
 
+  List<Task> filteredTasks = [];
+  List<Task> filterTasksByCategory(String category) {
+    return tasks.where((task) => task.category == category).toList();
+  }
+
   List<LinkModel> categories = [
     LinkModel(name: "Work", image: "assets/images/work.png"),
     LinkModel(name: "Education", image: "assets/images/education.png"),
@@ -159,34 +164,41 @@ class _HomeState extends State<Home> {
                     SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
-                        children: categories
-                            .map((e) => InkWell(
-                                  onTap: () {},
-                                  child: Card(
-                                      color: Colors.white,
-                                      shape: RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(20)),
-                                      child: SizedBox(
-                                        height: height * 0.19,
-                                        width: width * 0.35,
-                                        child: Column(
-                                          children: [
-                                            Center(
-                                                child: Image.asset(
-                                              e.image,
-                                              height: 140,
-                                            )),
-                                            Text(
-                                              e.name,
-                                              style:
-                                                  const TextStyle(fontSize: 20),
-                                            )
-                                          ],
-                                        ),
-                                      )),
-                                ))
-                            .toList(),
+                        children: categories.map((e) {
+                          final category = e.name; // Get the category name
+
+                          return InkWell(
+                            onTap: () {
+                              setState(() {
+                                filteredTasks = filterTasksByCategory(category);
+                              });
+                            },
+                            child: Card(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: SizedBox(
+                                height: height * 0.19,
+                                width: width * 0.35,
+                                child: Column(
+                                  children: [
+                                    Center(
+                                      child: Image.asset(
+                                        e.image,
+                                        height: 140,
+                                      ),
+                                    ),
+                                    Text(
+                                      e.name,
+                                      style: const TextStyle(fontSize: 20),
+                                    )
+                                  ],
+                                ),
+                              ),
+                            ),
+                          );
+                        }).toList(),
                       ),
                     ),
                   ],
