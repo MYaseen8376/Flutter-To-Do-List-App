@@ -6,98 +6,161 @@ import 'package:to_do_listapp/screens/lists.dart';
 
 class AddTaskPage extends StatefulWidget {
   final List<LinkModel> categories;
-
   AddTaskPage({required this.categories});
-
   @override
   _AddTaskPageState createState() => _AddTaskPageState();
 }
 
 class _AddTaskPageState extends State<AddTaskPage> {
   final DateFormat _dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
-
   final TextEditingController taskNameController = TextEditingController();
   final TextEditingController taskDescriptionController =
       TextEditingController();
   DateTime selectedDate = DateTime.now();
   final TextEditingController taskDateTimeController = TextEditingController();
-  String selectedCategory = 'Work'; // Default category
-  List<String> categories = ['Work', 'Education', 'Tasks'];
+  String selectedCategory = 'Work';
+  List<String> categories = [
+    'Work',
+    'Education',
+    'Persnal',
+    'Health',
+    'Family'
+  ];
 
   Future<void> _saveTask() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Create a task object
     Map<String, dynamic> task = {
       'name': taskNameController.text,
       'description': taskDescriptionController.text,
       'date': selectedDate.toIso8601String(),
       'category': selectedCategory,
     };
-
-    // Use jsonEncode to convert the task to a JSON string
     String taskString = jsonEncode(task);
-
-    // Retrieve existing tasks or create a new list
     List<String> taskList = prefs.getStringList('tasks') ?? [];
-
-    // Add the task to the list
     taskList.add(taskString);
-
-    // Save the updated list back to local storage
     await prefs.setStringList('tasks', taskList);
-
-    // Navigate back to the previous screen
     Navigator.pop(context);
   }
 
   @override
   Widget build(BuildContext context) {
+    final height = MediaQuery.of(context).size.height;
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
-        title: Text('Add Task'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: <Widget>[
-            TextField(
-              controller: taskNameController,
-              decoration: InputDecoration(labelText: 'Task Name'),
-            ),
-            TextField(
-              controller: taskDescriptionController,
-              decoration: InputDecoration(labelText: 'Task Description'),
-            ),
-            ElevatedButton(
-              onPressed: () => _selectDate(context),
-              child: Text("Select Date"),
-            ),
-            TextField(
-              controller: taskDateTimeController,
-              decoration: InputDecoration(labelText: 'Task Date and Time'),
-            ),
-            DropdownButton<String>(
-              value: selectedCategory,
-              onChanged: (String? value) {
-                setState(() {
-                  selectedCategory = value ?? 'Work';
-                });
-              },
-              items: categories.map((String category) {
-                return DropdownMenuItem<String>(
-                  value: category,
-                  child: Text(category),
-                );
-              }).toList(),
-            ),
-            ElevatedButton(
-              onPressed: _saveTask,
-              child: Text("Save Task"),
-            ),
-          ],
+        centerTitle: true,
+        title: const Text(
+          'Create New Task',
         ),
+        backgroundColor: Colors.green[400],
+        elevation: 0,
       ),
+      body: Column(children: <Widget>[
+        Container(
+          width: double.infinity,
+          height: height * 0.3,
+          decoration: BoxDecoration(
+              color: Colors.green[400],
+              borderRadius:
+                  const BorderRadius.only(bottomLeft: Radius.circular(50))),
+          child: Image.asset(
+            "assets/images/bgicon.png",
+            scale: 2.0,
+          ),
+        ),
+        Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Column(
+            children: [
+              TextField(
+                controller: taskNameController,
+                decoration: InputDecoration(
+                  hintText: 'Task Name',
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(color: Colors.green)),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              TextField(
+                controller: taskDescriptionController,
+                decoration: InputDecoration(
+                  hintText: 'Task Description',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12), // Rounded border
+                    borderSide: BorderSide(color: Colors.grey), // Border color
+                  ),
+                ),
+              ),
+              ElevatedButton(
+                onPressed: () => _selectDate(context),
+                child: Text("Select Date & Time"),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green, // Button background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius:
+                        BorderRadius.circular(12), // Rounded button shape
+                  ),
+                ),
+              ),
+              TextField(
+                controller: taskDateTimeController,
+                decoration: InputDecoration(
+                  labelText: 'Task Date and Time',
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(color: Colors.grey),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 10,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(color: Colors.grey),
+                ),
+                child: DropdownButton<String>(
+                  value: selectedCategory,
+                  onChanged: (String? value) {
+                    setState(() {
+                      selectedCategory = value ?? 'Work';
+                    });
+                  },
+                  items: categories.map((String category) {
+                    return DropdownMenuItem<String>(
+                      value: category,
+                      child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 15, vertical: 10),
+                        child: Text(category),
+                      ),
+                    );
+                  }).toList(),
+                  underline: Container(),
+                  icon: const Icon(Icons.arrow_drop_down),
+                  style: const TextStyle(color: Colors.black),
+                  isExpanded: true,
+                  itemHeight: 50,
+                ),
+              ),
+              ElevatedButton(
+                onPressed: _saveTask,
+                child: const Text("Save Task"),
+                style: ElevatedButton.styleFrom(
+                  primary: Colors.green, // Button background color
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ]),
     );
   }
 
