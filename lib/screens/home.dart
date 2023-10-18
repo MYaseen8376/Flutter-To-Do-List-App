@@ -1,10 +1,9 @@
 import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:to_do_listapp/screens/addtask.dart';
+import 'package:to_do_listapp/screens/categorypage.dart';
 import 'package:to_do_listapp/screens/lists.dart';
 import 'package:to_do_listapp/screens/task.dart';
 
@@ -18,17 +17,9 @@ class Home extends StatefulWidget {
 class _HomeState extends State<Home> {
   void _removeTask(int index) async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
-
-    // Retrieve existing tasks
     List<String> taskList = prefs.getStringList('tasks') ?? [];
-
-    // Remove the task at the specified index
     taskList.removeAt(index);
-
-    // Save the updated list back to local storage
     await prefs.setStringList('tasks', taskList);
-
-    // Update the UI to reflect the changes
     setState(() {
       tasks.removeAt(index);
     });
@@ -47,7 +38,6 @@ class _HomeState extends State<Home> {
   Future<void> _loadTasks() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final List<String>? taskStrings = prefs.getStringList('tasks');
-
     if (taskStrings == null) {
       return;
     }
@@ -56,7 +46,7 @@ class _HomeState extends State<Home> {
         .where((task) => task != null)
         .map((task) => task!)
         .toList();
-
+    loadedTasks.sort((a, b) => a.date.compareTo(b.date));
     setState(() {
       tasks = loadedTasks;
     });
@@ -73,11 +63,6 @@ class _HomeState extends State<Home> {
           date: DateTime.now(),
           category: 'Error');
     }
-  }
-
-  List<Task> filteredTasks = [];
-  List<Task> filterTasksByCategory(String category) {
-    return tasks.where((task) => task.category == category).toList();
   }
 
   List<LinkModel> categories = [
@@ -165,13 +150,18 @@ class _HomeState extends State<Home> {
                       scrollDirection: Axis.horizontal,
                       child: Row(
                         children: categories.map((e) {
-                          final category = e.name; // Get the category name
-
+                          final category = e.name;
                           return InkWell(
                             onTap: () {
-                              setState(() {
-                                filteredTasks = filterTasksByCategory(category);
-                              });
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => CategoryPage(
+                                    category: category,
+                                    tasks: tasks,
+                                  ),
+                                ),
+                              );
                             },
                             child: Card(
                               color: Colors.white,
@@ -301,7 +291,7 @@ class _HomeState extends State<Home> {
                     })),
               ],
             ),
-          )
+          ),
         ]),
       ),
     );

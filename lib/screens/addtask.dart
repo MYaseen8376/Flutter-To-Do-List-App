@@ -79,7 +79,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     hintText: 'Task Name',
                     border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(color: Colors.green)),
+                        borderSide: const BorderSide(color: Colors.green)),
                   ),
                 ),
                 const SizedBox(
@@ -90,9 +90,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   decoration: InputDecoration(
                     hintText: 'Task Description',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12), // Rounded border
-                      borderSide:
-                          BorderSide(color: Colors.grey), // Border color
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
                   ),
                 ),
@@ -100,10 +99,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   onPressed: () => _selectDate(context),
                   child: Text("Select Date & Time"),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // Button background color
+                    primary: Colors.green,
                     shape: RoundedRectangleBorder(
-                      borderRadius:
-                          BorderRadius.circular(12), // Rounded button shape
+                      borderRadius: BorderRadius.circular(12),
                     ),
                   ),
                 ),
@@ -113,7 +111,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     labelText: 'Task Date and Time',
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(12),
-                      borderSide: BorderSide(color: Colors.grey),
+                      borderSide: const BorderSide(color: Colors.grey),
                     ),
                   ),
                 ),
@@ -136,7 +134,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                       return DropdownMenuItem<String>(
                         value: category,
                         child: Padding(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 15, vertical: 10),
                           child: Text(category),
                         ),
@@ -153,7 +151,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                   onPressed: _saveTask,
                   child: const Text("Save Task"),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.green, // Button background color
+                    primary: Colors.green,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
                     ),
