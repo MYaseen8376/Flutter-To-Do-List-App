@@ -22,7 +22,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
   List<String> categories = [
     'Work',
     'Education',
-    'Persnal',
+    'Personal',
     'Health',
     'Family'
   ];

@@ -53,34 +53,37 @@ class _CategoryPageState extends State<CategoryPage> {
                   ));
                 }
                 final task = filteredTasks[index];
-                return Container(
-                  decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12)),
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(
-                              task.name,
-                              style: const TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 20),
-                            ),
-                            Text(
-                              '${DateFormat('E, d MMMM y').format(task.date)} ${DateFormat('h:mm a').format(task.date)}',
-                            ),
-                          ],
-                        ),
-                        const Divider(color: Colors.black),
-                        Text(
-                          task.description,
-                          style: const TextStyle(fontSize: 15),
-                        )
-                      ],
+                return Padding(
+                  padding: const EdgeInsets.all(5.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(12)),
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Text(
+                                task.name,
+                                style: const TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 20),
+                              ),
+                              Text(
+                                '${DateFormat('E, d MMMM y').format(task.date)} ${DateFormat('h:mm a').format(task.date)}',
+                              ),
+                            ],
+                          ),
+                          const Divider(color: Colors.black),
+                          Text(
+                            task.description,
+                            style: const TextStyle(fontSize: 15),
+                          )
+                        ],
+                      ),
                     ),
                   ),
                 );
